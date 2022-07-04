@@ -1,0 +1,361 @@
+
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> Test Case Generation of Web Application</title>
+
+<!--    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap@4.6.min.css') }}">-->
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+  <script src="../static/dataTool.js"></script>
+    <script src="../static/index.css"></script>
+ <style>body {
+     background: url("../static/background.jpg") ;
+        margin: 0;
+    }</style>
+    <script src="../static/qwebchannel.js"></script><!--加载qwebchannel.js-->
+    <script>
+    window.onload = function () {
+        try {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                //将QWebChannel的实例挂载到window.PyHandler，后面在javascript中通过window.PyHandler即可调用
+                window.PyHandler = channel.objects.PyHandler;
+            });
+        } catch (e) {
+            window.console.log(e)
+        }
+    }
+    </script>
+
+</head>
+<body>
+<div style="">
+ <div class="text-center"  >
+    <div align="center" class="container">
+        <div class="row" style="margin-top:50px">
+<b style="font-size:25px">test programs selection</b>
+          <select name="selectList1" id="selectList1" onchange="select_change1()" style="height: 35px;width: 139px ;font-size:21px">
+         <option>Webchess</option>
+         <option>Faqforge</option>
+         <option>phpaaCMS</option>
+         <option>openConf</option>
+           <option> Addressbook </option>
+           <option>Schoolmate</option>
+      </select>
+
+<br>
+<br>
+    <label>
+   <b style="font-size:25px">number of subpopulations：</b>
+        <select name="selectList2" id="selectList2" onchange="select_change2()" style="height: 35px;width: 49px;font-size:21px">
+            <option>1</option>
+            <option>2</option>
+            <option>4</option>
+        </select>
+    </label>
+
+ <script>
+     function select_change1() {
+         var object = document.getElementById("selectList1");//获取对应的select对象
+        var selectedIndex = object.selectedIndex;//获取被选中的下拉框对应的对象索引
+        var val = object.options[selectedIndex].value;
+        if (val == "Faqforge")
+        {
+            document.getElementById("selectList2").options[2].disabled=true;
+        }
+        else
+        {
+            document.getElementById("selectList2").options[2].disabled=false;
+        }
+     }
+
+            </script>
+
+<br>
+            <br>
+               <label>
+               <b style="font-size:25px"> number of processes：</b>
+                   <select name="selectList3" id="selectList3" style="height: 35px;width: 49px;font-size:21px">
+                       <option>4</option>
+                       <option>2</option>
+                       <option>1</option>
+                   </select>
+               </label>
+            <script>
+     function select_change2() {
+         var object = document.getElementById("selectList2");//获取对应的select对象
+        var selectedIndex = object.selectedIndex;//获取被选中的下拉框对应的对象索引
+        var val = object.options[selectedIndex].value;
+
+        if (val == "2"||val=="4")
+        {
+            document.getElementById("selectList3").options[2].disabled=true;
+        }
+        else{
+             document.getElementById("selectList3").options[2].disabled=false;
+        }
+     }
+
+            </script>
+            <br>
+<br>
+              <a class = input>
+                  <b style="font-size:25px">number of executions：</b>
+                     <input type="text" placeholder="<=30"  oninput="if(value>30)value=30;if(value.length>2)value=value.slice(0,2)" style="height:35px;width:69px;font-size:21px" name="selectList4" id="selectList4" >
+              </a>
+
+<br>
+            <br>
+        <div class="input-group-btn">
+    <input type="submit" id="b_log"  value="starting"  onclick="test_click()"
+            style="background-color:rgba(0,0,0,0.1);font-size:25px ;height: 39px;width: 119px; border:none;color:#ff6b4c"/>
+        </div>
+
+   <script>
+            function test_click() {
+
+                 var val2 =document.getElementById("selectList2").options[document.getElementById("selectList2").selectedIndex].value ;//获取对应的select对象
+                var val1 =document.getElementById("selectList1").options[document.getElementById("selectList1").selectedIndex].value ;
+                 var val3 =document.getElementById("selectList3").options[document.getElementById("selectList3").selectedIndex].value ;
+                var val = document.getElementById("selectList4").value.replace(/(^\s*)|(\s*$)/g, '')
+                if(val =='' || val == undefined || val == null)
+                {
+                    window.alert("The number of runs cannot be empty！")
+                }
+                else if (Number(val)<1)
+                {
+                    window.alert("The number of runs cannot be less than 1！")
+                }
+                else
+                {
+
+        if (val1 == "Faqforge" && val2 == "4"){
+            window.alert("Faqforge doesn't match 4 sunpopulations!");
+        }else if (val2 == "2"&& val3 == "1" ){
+            window.alert("2 subpopulations don't match 1 process!");
+        }else if (val2 == "4"&& val3 == "1" ){
+               window.alert("4 subpopulations don't match 1 process!");
+        }else{
+               window.PyHandler.init_home(unescape($("#selectList1 option:selected").val())+"."+
+                unescape($("#selectList2 option:selected").val())+"."+
+                unescape($("#selectList3 option:selected").val())+"."+
+                         unescape(document.getElementById('selectList4').value))
+                ;
+        }
+                }
+
+            }
+          </script>
+            <br>
+             <div class="input-group">
+        <b style="font-size:30px">Test Results</b>
+    </div>
+    </div>
+    </div>
+      </div>
+<br>
+    <br>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main2" style="width:100%;">
+		<div id="main" style="width:50%;float:left ;height:400px;"></div>
+ <div id="main1" style="width: 50%;float:right ;height:400px;"></div>
+</div>
+		<script type="text/javascript">
+            var myChart = echarts.init(document.getElementById('main'));
+			var option;
+			var data;
+             window.say_hello = function (msg) {
+            var msg1 = msg.split(',');
+            msg2 = msg1.map(Number);
+                 data = echarts.dataTool.prepareBoxplotData([msg2]);
+            var d1=('');
+option = {
+    title: [
+        {
+            text: 'Boxplot Distribution of Execution Time',
+            left: 'center',
+        },
+        {
+            text: 'upper: Q3 + 1.5 * IRQ \nlower: Q1 - 1.5 * IRQ',
+            borderColor: '#ff0000',
+            borderWidth: 1,
+            textStyle: {
+                fontSize: 14,
+                color:'#ff0000'
+            },
+            left: '10%',
+            top: '90%'
+        }
+    ],
+    tooltip: {
+        trigger: 'item',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+        toolbox: {
+        feature: {dataView:{
+            show:true
+        },
+            dataZoom: {},
+
+        }
+    },
+    grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '15%'
+    },
+    xAxis: {
+        type: 'category',
+        data: [''],
+        boundaryGap: true,
+        nameGap: 30,
+        splitArea: {
+            show: false
+        },
+        axisLabel: {
+           formatter: '{value}'
+        },
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        name: 'Time cost(seconds)',
+        splitArea: {
+            show: true
+        }
+    },
+    series: [
+        {
+            name: 'boxplot',
+            type: 'boxplot',
+            data: data.boxData,
+            tooltip: {
+                formatter: function (param) {
+                    return [
+                        'upper: ' + param.data[5],
+                        'Q3: ' + param.data[4],
+                        'median: ' + param.data[3],
+                        'Q1: ' + param.data[2],
+                        'lower: ' + param.data[1]
+                    ].join('<br/>')
+                }
+            }
+        },
+        {
+            name: 'outlier',
+            type: 'scatter',
+            data: data.outliers
+        }
+    ]
+};
+
+			myChart.setOption(option);
+    }
+		</script>
+
+
+		<script type="text/javascript">
+            var myChart1 = echarts.init(document.getElementById('main1'));
+			var option;
+			var data;
+             window.say_hello1 = function (msg1) {
+            var msg11 = msg1.split(',');
+            msg22 = msg11.map(Number);
+                 data = echarts.dataTool.prepareBoxplotData([msg22]);
+var d1=('');
+option = {
+    title: [
+        {
+            text: 'Boxplot Distribution of Search Itarations',
+            left: 'center',
+        },
+        {
+            text: 'upper: Q3 + 1.5 * IRQ \nlower: Q1 - 1.5 * IRQ',
+            borderColor: '#ff0000',
+            borderWidth: 1,
+            textStyle: {
+                fontSize: 14,
+                color:'#ff0000'
+            },
+            left: '10%',
+            top: '90%'
+        }
+    ],
+    tooltip: {
+        trigger: 'item',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+        toolbox: {
+        feature: {dataView:{
+            show:true
+        },
+            dataZoom: {},
+
+        }
+    },
+    grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '15%'
+    },
+    xAxis: {
+        type: 'category',
+        data: [''],
+        boundaryGap: true,
+        nameGap: 30,
+        splitArea: {
+            show: false
+        },
+        axisLabel: {
+           formatter: '{value}'
+        },
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        name: 'Search Itarations',
+        splitArea: {
+            show: true
+        }
+    },
+    series: [
+        {
+            name: 'boxplot',
+            type: 'boxplot',
+            data: data.boxData,
+            tooltip: {
+                formatter: function (param) {
+                    return [
+                        'upper: ' + param.data[5],
+                        'Q3: ' + param.data[4],
+                        'median: ' + param.data[3],
+                        'Q1: ' + param.data[2],
+                        'lower: ' + param.data[1]
+                    ].join('<br/>')
+                }
+            }
+        },
+        {
+            name: 'outlier',
+            type: 'scatter',
+            data: data.outliers
+        }
+    ]
+};
+
+			myChart1.setOption(option);
+    }
+		</script>
+    </div>
+</body>
+</html>
+
