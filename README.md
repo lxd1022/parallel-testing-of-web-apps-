@@ -1,6 +1,8 @@
 # parallel-testing-of-web-apps-
 ## Background
 a little demo of parallel testing about web applications<br/>
+## Features
+With this tool you can view the execution time and search iterations of Web test cases generation 
 ## install
 Download the test package and unzip it.
 ## useage
