@@ -10,3 +10,10 @@ Double-click test.exe.
 Select the web program under test number of subpopulations and number of processes.
 Fill in the number of executions.
 Finally click the "starting" buttun and you would get the result
+```
+.
+##########    the main file
+├── static                     
+│   ├── index.css             
+│   ├── index.html             // Front-end page and display of running results
+└── test.exe                   // the executable file of the project and background processing 
